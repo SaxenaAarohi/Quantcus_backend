@@ -1,0 +1,108 @@
+// Prisma schema for the Product Intelligence Dashboard.
+// Database: MongoDB. With MongoDB we use `prisma db push` (not migrate dev).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// A processing job. Created for video uploads, CSV validation, and price refreshes.
+model Job {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  type         String // VIDEO_PROCESSING | CSV_VALIDATION | PRICE_REFRESH
+  status       String    @default("PENDING") // PENDING | RUNNING | COMPLETED | FAILED | PARTIALLY_COMPLETED
+  progress     Int       @default(0) // 0 - 100
+  message      String? // human readable status / error message
+  errorDetails String? // JSON string with failed row details when available
+  startedAt    DateTime?
+  completedAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  products Product[]
+}
+
+// A product listing extracted from a video, CSV, or entered manually.
+model Product {
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  skuId        String  @unique
+  title        String?
+  description  String?
+  brand        String?
+  category     String?
+  price        Float?
+  mrp          Float?
+  imageUrl     String?
+  productUrl   String?
+  availability String? // in_stock | out_of_stock
+  color        String?
+  size         String?
+  material     String?
+
+  // Source of the data and quality scoring
+  source       String  @default("MANUAL") // VIDEO | CSV | MANUAL
+  qualityScore Int     @default(0) // 0 - 100
+
+  // Title enhancement
+  enhanceTitle        Boolean  @default(false)
+  enhancedTitle       String?
+  enhancedTitleReason String?
+  suggestedKeywords   String[] // keywords used to build the enhanced title
+  extractedAttributes String? // JSON string of attributes extracted from the video
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  jobId String? @db.ObjectId
+  job   Job?    @relation(fields: [jobId], references: [id])
+
+  issues          ProductIssue[]
+  competitorPrices CompetitorPrice[]
+  alerts          Alert[]
+}
+
+// A listing-quality issue detected during validation.
+model ProductIssue {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  issueType    String
+  severity     String // HIGH | MEDIUM | LOW
+  message      String
+  suggestedFix String
+  createdAt    DateTime @default(now())
+
+  productId String  @db.ObjectId
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+// A competitor price for a product on another platform.
+model CompetitorPrice {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  skuId           String
+  productName     String?
+  platform        String // Amazon | Myntra | Ajio | Meesho | Nykaa | ...
+  competitorUrl   String?
+  competitorPrice Float
+  currency        String   @default("INR")
+  lastCheckedAt   DateTime @default(now())
+  createdAt       DateTime @default(now())
+
+  productId String  @db.ObjectId
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+// An actionable alert for a listing or pricing issue.
+model Alert {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  alertType String
+  severity  String // HIGH | MEDIUM | LOW
+  message   String
+  status    String   @default("OPEN") // OPEN | RESOLVED
+  createdAt DateTime @default(now())
+
+  productId String?  @db.ObjectId
+  product   Product? @relation(fields: [productId], references: [id])
+}

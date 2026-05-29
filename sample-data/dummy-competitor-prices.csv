@@ -1,0 +1,13 @@
+sku_id,product_name,platform,competitor_url,competitor_price,currency,last_checked_at
+SHOE001,Nike Blue Running Shoes,Amazon,https://example.com/amazon/shoe001,3299,INR,2026-05-28
+SHOE001,Nike Blue Running Shoes,Myntra,https://example.com/myntra/shoe001,3599,INR,2026-05-28
+SHOE001,Nike Blue Running Shoes,Ajio,https://example.com/ajio/shoe001,3199,INR,2026-05-28
+SHOE001,Nike Blue Running Shoes,Meesho,https://example.com/meesho/shoe001,3450,INR,2026-05-28
+DRESS001,Red Dress,Ajio,https://example.com/ajio/dress001,1499,INR,2026-05-28
+DRESS001,Red Dress,Myntra,https://example.com/myntra/dress001,1699,INR,2026-05-28
+DRESS001,Red Dress,Nykaa,https://example.com/nykaa/dress001,1599,INR,2026-05-28
+BAG001,Puma Backpack,Amazon,https://example.com/amazon/bag001,1099,INR,2026-05-28
+BAG001,Puma Backpack,Meesho,https://example.com/meesho/bag001,999,INR,2026-05-28
+EARBUD001,boAt Earbuds,Amazon,https://example.com/amazon/earbud001,1299,INR,2026-05-28
+EARBUD001,boAt Earbuds,Nykaa,https://example.com/nykaa/earbud001,1549,INR,2026-05-28
+EARBUD001,boAt Earbuds,Myntra,https://example.com/myntra/earbud001,1450,INR,2026-05-28

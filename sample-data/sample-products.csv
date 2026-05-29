@@ -1,0 +1,7 @@
+sku_id,product_title,description,brand,category,price,mrp,image_url,product_url,availability,color,size,material
+SHOE001,Nike Blue Running Shoes,Comfortable lightweight running shoes with mesh upper for daily training.,Nike,Shoes,3999,4999,https://example.com/img/shoe001.jpg,https://flipkart.com/p/shoe001,in_stock,Blue,9,Mesh
+DRESS001,Red Dress,,Zara,Dresses,1799,2499,https://example.com/img/dress001.jpg,https://flipkart.com/p/dress001,in_stock,Red,M,Cotton
+BAG001,Black Bag,A backpack,,Bags,1299,999,,,out_of_stock,,,
+EARBUD001,boAt Earbuds,True wireless earbuds with deep bass and long battery life for music lovers.,boAt,Electronics,1499,2999,https://example.com/img/earbud001.jpg,https://flipkart.com/p/earbud001,in_stock,White,,Plastic
+WATCH001,Watch,Nice watch,,Accessories,-50,1200,broken-url,https://flipkart.com/p/watch001,in_stock,Black,,
+SHOE001,Nike Running Shoes Duplicate,Duplicate SKU row to demonstrate duplicate detection.,Nike,Shoes,3899,4999,https://example.com/img/shoe001b.jpg,https://flipkart.com/p/shoe001,in_stock,Blue,10,Mesh
