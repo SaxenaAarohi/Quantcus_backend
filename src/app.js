@@ -7,9 +7,18 @@ const { notFound, errorHandler } = require("./middlewares/errorHandler");
 
 const app = express();
 
+const allowedOrigins = (process.env.CLIENT_URL || "*")
+  .split(",")
+  .map((o) => o.trim().replace(/\/+$/, ""));
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "*",
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes("*") || allowedOrigins.includes(origin.replace(/\/+$/, ""))) {
+        return callback(null, true);
+      }
+      return callback(new Error(`Not allowed by CORS: ${origin}`));
+    },
   })
 );
 
