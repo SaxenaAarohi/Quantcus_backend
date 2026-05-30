@@ -2,39 +2,19 @@ const { KEYWORD_BANK } = require("../utils/mockData");
 
 function enhanceTitle(product) {
   const originalTitle = (product.title || "").trim();
+  const brand = (product.brand || "").trim();
+  const color = (product.color || "").trim();
+  const category = (product.category || "").trim();
 
-  const attributes = {
-    brand: (product.brand || "").trim(),
-    color: (product.color || "").trim(),
-    productType: (product.category || "").trim(),
-    material: (product.material || "").trim(),
-    size: (product.size || "").trim(),
-  };
+  const keywords = KEYWORD_BANK[category] || KEYWORD_BANK.GENERIC;
+  const keyword = keywords[0] || "";
 
-  const bank = KEYWORD_BANK[attributes.productType] || KEYWORD_BANK.GENERIC;
-  const keywords = bank.slice(0, 3);
+  const parts = [brand, color, keyword || category];
+  const enhancedTitle = parts.filter(Boolean).join(" ") || originalTitle;
 
-  const combined = [
-    attributes.brand,
-    attributes.color,
-    keywords[0],
-    attributes.material ? `${attributes.material} Upper` : "",
-  ].filter(Boolean).join(" ");
+  const reason = `Combined brand, color and category with the trending keyword "${keyword}".`;
 
-  const enhancedTitle =
-    [...new Set(combined.split(/\s+/))]
-      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-      .join(" ") || originalTitle;
-
-  const reason =
-    "Combined the product attributes (" +
-    Object.entries(attributes)
-      .filter(([, v]) => v)
-      .map(([k, v]) => `${k}: ${v}`)
-      .join(", ") +
-    `) with trending keywords (${keywords.join(", ")}) to make the title more descriptive and searchable.`;
-
-  return { originalTitle, attributes, keywords, enhancedTitle, reason };
+  return { originalTitle, enhancedTitle, keywords: keywords.slice(0, 3), reason };
 }
 
 module.exports = { enhanceTitle };
