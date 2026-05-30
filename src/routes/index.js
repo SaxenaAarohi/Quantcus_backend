@@ -24,6 +24,7 @@ router.get("/products/:skuId/competitor-prices", productController.getCompetitor
 
 router.get("/dashboard/summary", dashboardController.getQualitySummary);
 router.get("/dashboard/quality-summary", dashboardController.getQualitySummary);
+router.get("/dashboard/report", dashboardController.getQualityReport);
 
 router.post("/competitor-prices/upload", upload.single("csv"), competitorController.uploadCompetitorCsv);
 router.post("/competitor-prices/refresh", competitorController.refreshPrices);
