@@ -14,28 +14,15 @@ function enhanceTitle(product) {
   const bank = KEYWORD_BANK[attributes.productType] || KEYWORD_BANK.GENERIC;
   const keywords = bank.slice(0, 3);
 
-  const parts = [
+  const combined = [
     attributes.brand,
     attributes.color,
     keywords[0],
     attributes.material ? `${attributes.material} Upper` : "",
-  ].filter(Boolean);
-
-  const seen = new Set();
-  const words = [];
-  parts
-    .join(" ")
-    .split(/\s+/)
-    .forEach((word) => {
-      const key = word.toLowerCase();
-      if (!seen.has(key)) {
-        seen.add(key);
-        words.push(word);
-      }
-    });
+  ].filter(Boolean).join(" ");
 
   const enhancedTitle =
-    words
+    [...new Set(combined.split(/\s+/))]
       .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
       .join(" ") || originalTitle;
 
