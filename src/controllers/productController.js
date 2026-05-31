@@ -3,6 +3,7 @@ const { asyncHandler } = require("../utils/helpers");
 const { saveAndValidateProduct } = require("../services/productService");
 const { enhanceTitle } = require("../services/titleEnhancementService");
 const { comparePrices } = require("../services/competitorService");
+const { generateRecommendations } = require("../services/recommendationService");
 
 const listProducts = asyncHandler(async (req, res) => {
   const { severity, category, alert } = req.query;
@@ -35,7 +36,10 @@ const getProduct = asyncHandler(async (req, res) => {
     include: { issues: true, competitorPrices: true, alerts: true },
   });
   if (!product) return res.status(404).json({ error: "Product not found." });
-  res.json(product);
+
+  const comparison = comparePrices(product.price, product.competitorPrices);
+  const recommendations = generateRecommendations(product, product.issues, comparison);
+  res.json({ ...product, recommendations });
 });
 
 const getProductIssues = asyncHandler(async (req, res) => {
